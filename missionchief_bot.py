@@ -72,7 +72,7 @@ def getRequirements(requirements_url):
   for index, r in enumerate(requirements):
     if "Required" in r.text:
      if "Station" not in r.text:
-      requirement = r.text.replace('Required','').strip();
+      requirement = r.text.replace('Required','').strip()
       qty = requirements[index+1].text
       print(f"Requirement found :   {str(qty)} x {str(requirement)}")
       requiredlist.append({'requirement':requirement,'qty': qty })
@@ -91,7 +91,7 @@ def doMissions():
 #   mission_text = browser.find_by_id('mission_next_mission_btn').text
 #   print(requirementsurl)
 
-   mission_text = browser.find_by_id('missionH1').text
+#   mission_text = browser.find_by_id('missionH1').text
 #   print("MISSION " + mission_str +": " + mission_text)
    missionId = href.split("/")[4]
 #   print("Getting requirements")
@@ -126,17 +126,17 @@ def doMissions():
        print("Checking keywords..")
       #  Check some of the keywords we know are associated with fire.
        if("Fire engines" in requirement['requirement']):
-         for i in range(int(requirement['qty'])):
-          for vehicle in vehicles["Fire Engine"]:
-            if(vehicle in label['vehicle_type']):
-               checkid = label['id'].split("_")[3]
-               checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')
-               for check in checkbox:
-                 if(check['value']==checkid):
-                   check.check()
-                   despatched.append(missionId)
-
-   browser.find_by_name('commit').click()
+        for i in range(int(requirement['qty'])):
+         for vehicle in vehicles["Fire Engine"]:
+          if(vehicle in label['vehicle_type']):
+           checkid = label['id'].split("_")[3]
+           checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')
+           for check in checkbox:
+            if(check['value']==checkid):
+             check.check()
+             despatched.append(missionId)
+        next
+       browser.find_by_name('commit').click()
 
 #    for miss in despatched:
 #     if(miss==missionId):
