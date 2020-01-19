@@ -94,32 +94,53 @@ def doMissions():
    
    for requirement in requiredlist:
     print('*******************')
-    print(requirement)
+    print(requirement['requirement'])
     print('*******************')
-    time.sleep(1)
+    input("Press Enter to continue...")
+    
     for label in labels:
+      print('*******************')
+      print(label['vehicle_type'])
+      print('*******************')
+      input("Press Enter to continue...")
+      
       if(requirement['requirement'] in label['vehicle_type']):
+       print('*******************')
+       print(requirement['requirement'])
+       print('*******************')
        print("Direct match found...")
        checkid = label['id'].split("_")[3]
        checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')
+       
        for check in checkbox:
+        
         if(check['value'] == checkid):
          check.check()
+      
       else:
        print("Couldn't find a direct match...")
        print("Checking keywords..")
+      
       #  Check some of the keywords we know are associated with fire.
        if("Fire engines" in requirement['requirement']):
+        print('*******************')
+        print(requirement['qty'])
+        print('*******************')
+        input("Press Enter to continue...")
         for i in range(int(requirement['qty'])):
+         
          for vehicle in vehicles["Fire Engine"]:
+          
           if(vehicle in label['vehicle_type']):
            checkid = label['id'].split("_")[3]
            checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')
+           
            for check in checkbox:
+            
             if(check['value']==checkid):
              check.check()
              despatched.append(missionId)
-        next
+        next(i)
        browser.find_by_name('commit').click()
 
     for miss in despatched:
