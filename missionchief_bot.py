@@ -62,10 +62,6 @@ def getMissions():
         time.sleep(1)
 
 def getRequirements(requirements_url):
-#  requirementsurl = baseurl + "/einsaetze/3?mission_id=" + missionId
-
-#   print(requirements_url)
-
   browser.visit(requirements_url)
   requiredlist = []
   requirements = browser.find_by_tag('td')
@@ -83,36 +79,24 @@ def doMissions():
  for href in hrefs:
   count+=1  
   try:
-#   print(href)
    browser.visit(href)
    mission_str = str(count)
-
    requirements_url = browser.find_link_by_partial_href('/einsaetze/')[0]['href']
-#   mission_text = browser.find_by_id('mission_next_mission_btn').text
-#   print(requirementsurl)
-
-#   mission_text = browser.find_by_id('missionH1').text
-#   print("MISSION " + mission_str +": " + mission_text)
+   mission_text = browser.find_by_id('missionH1').text
+   print("MISSION " + mission_str +": " + mission_text)
    missionId = href.split("/")[4]
-#   print("Getting requirements")
+   print("Getting requirements")
    requiredlist=getRequirements(requirements_url)
-#   print(requiredlist)
-#   print("Got Requirements")
+   print(requiredlist)
+   print("Got Requirements")
    browser.visit(href)
-
-#   labels=browser.find_by_css('label[class="mission_vehicle_label"]')
-
-
    labels=browser.find_by_css('tr[class="vehicle_select_table_tr"]')
-#   print('****************')
-#   print(len(labels))
-#   print(labels.text)
-#   print(labels[0]['vehicle_type'])
-#   print('****************')
-
-#   labels=browser.find_by_css('label[class="mission_vehicle_label"]')
-
+   
    for requirement in requiredlist:
+    print('*******************')
+    print(requirement)
+    print('*******************')
+    time.sleep(1)
     for label in labels:
       if(requirement['requirement'] in label['vehicle_type']):
        print("Direct match found...")
@@ -138,10 +122,10 @@ def doMissions():
         next
        browser.find_by_name('commit').click()
 
-#    for miss in despatched:
-#     if(miss==missionId):
-#       print("Already despatched this mission.. Skipping it")
-#     browser.find_by_name('commit').click()
+    for miss in despatched:
+     if(miss==missionId):
+       print("Already despatched this mission.. Skipping it")
+     browser.find_by_name('commit').click()
  
    
   # except: 
