@@ -2,7 +2,8 @@ import random
 vehicles = {
 "Fire Engine": {
 "Water Ladder",
-"Light 4X4 Pump (L4P)"
+"Light 4X4 Pump (L4P)",
+"Rescue Pump"
 },
 "Misc" : {
 "Aerial Appliance",
