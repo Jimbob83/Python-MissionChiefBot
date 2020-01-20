@@ -72,12 +72,17 @@ def getRequirements(requirements_url):
       qty = requirements[index+1].text
       print(f"Requirement found :   {str(qty)} x {str(requirement)}")
       requiredlist.append({'requirement':requirement,'qty': qty })
+  print('********************')
+#  print(len(requiredlist))
+  print(int(requiredlist[0][qty]))
+  print('********************')
+  input("Press Enter to continue...") 
   return requiredlist
     
 def doMissions():
  count = 0
  for href in hrefs:
-  count+=1  
+  count+=1
   try:
    browser.visit(href)
    mission_str = str(count)
