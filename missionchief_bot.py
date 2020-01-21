@@ -48,7 +48,7 @@ def login(username,password):
      return False
 
 def getMissions():
-    print("Getting missions")
+#    print("Getting missions")
     url = baseurl
     browser.visit(url)
     # Finding links for missions
@@ -70,13 +70,8 @@ def getRequirements(requirements_url):
      if "Station" not in r.text:
       requirement = r.text.replace('Required','').strip()
       qty = requirements[index+1].text
-      print(f"Requirement found :   {str(qty)} x {str(requirement)}")
+#      print(f"Requirement found :   {str(qty)} x {str(requirement)}")
       requiredlist.append({'requirement':requirement,'qty': qty })
-  print('********************')
-#  print(len(requiredlist))
-  print(int(requiredlist[0][qty]))
-  print('********************')
-  input("Press Enter to continue...") 
   return requiredlist
     
 def doMissions():
@@ -87,71 +82,62 @@ def doMissions():
    browser.visit(href)
    mission_str = str(count)
    requirements_url = browser.find_link_by_partial_href('/einsaetze/')[0]['href']
-   mission_text = browser.find_by_id('missionH1').text
-   print("MISSION " + mission_str +": " + mission_text)
+#   mission_text = browser.find_by_id('missionH1').text
+#   print("MISSION " + mission_str +": " + mission_text)
    missionId = href.split("/")[4]
-   print("Getting requirements")
+#   print("Getting requirements")
    requiredlist=getRequirements(requirements_url)
-   print(requiredlist)
-   print("Got Requirements")
+  
+   #input("Here's Me") 
+   
+   print('********************')
+   finalRequiredList = []
+   for item in requiredlist:
+     x = int(item['qty'])
+     for i in range(x):
+       finalRequiredList.append(item['requirement'])
+       print(item['requirement'])
+   print('********************')
+   print(finalRequiredList)
+   #input("On my way hame") 
+   
+#   print(requiredlist)
+#   print("Got Requirements")
    browser.visit(href)
    labels=browser.find_by_css('tr[class="vehicle_select_table_tr"]')
    
-   for requirement in requiredlist:
-    print('*******************')
-    print(requirement['requirement'])
-    print('*******************')
-    input("Press Enter to continue...")
-    
+   for requirement in finalRequiredList:
     for label in labels:
-      print('*******************')
-      print(label['vehicle_type'])
-      print('*******************')
-      input("Press Enter to continue...")
-      
-      if(requirement['requirement'] in label['vehicle_type']):
-       print('*******************')
-       print(requirement['requirement'])
-       print('*******************')
-       print("Direct match found...")
+      if(requirement in label['vehicle_type']):
        checkid = label['id'].split("_")[3]
        checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')
-       
-       for check in checkbox:
-        
+       for check in checkbox: 
         if(check['value'] == checkid):
          check.check()
-      
       else:
        print("Couldn't find a direct match...")
        print("Checking keywords..")
-      
       #  Check some of the keywords we know are associated with fire.
-       if("Fire engines" in requirement['requirement']):
-        print('*******************')
-        print(requirement['qty'])
-        print('*******************')
-        input("Press Enter to continue...")
-        for i in range(int(requirement['qty'])):
-         
-         for vehicle in vehicles["Fire Engine"]:
-          
+       if requirement == "Fire Engines":
+        #print('*******************')
+        #print(requirement['qty'])
+        #print('*******************')
+        #input("Press Enter to continue...")
+        #for i in range(int(requirement['qty'])):
+         for vehicle in vehicles["Fire Engine"]: 
           if(vehicle in label['vehicle_type']):
            checkid = label['id'].split("_")[3]
-           checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')
-           
+           checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')    
            for check in checkbox:
-            
             if(check['value']==checkid):
              check.check()
              despatched.append(missionId)
-        next(i)
-       browser.find_by_name('commit').click()
+      browser.find_by_id('mission_alarm_btn').click()
 
     for miss in despatched:
      if(miss==missionId):
        print("Already despatched this mission.. Skipping it")
-     browser.find_by_name('commit').click()
+    browser.find_by_name('commit').click()
  
    
   # except: 
