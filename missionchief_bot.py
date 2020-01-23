@@ -105,8 +105,9 @@ def doMissions():
 #   print("Got Requirements")
    browser.visit(href)
    labels=browser.find_by_css('tr[class="vehicle_select_table_tr"]')
-   
+   counter = 0
    for requirement in finalRequiredList:
+    counter += 1
     for label in labels:
       if(requirement in label['vehicle_type']):
        checkid = label['id'].split("_")[3]
@@ -118,26 +119,29 @@ def doMissions():
        print("Couldn't find a direct match...")
        print("Checking keywords..")
       #  Check some of the keywords we know are associated with fire.
-       if requirement == "Fire Engines":
-        #print('*******************')
-        #print(requirement['qty'])
-        #print('*******************')
-        #input("Press Enter to continue...")
-        #for i in range(int(requirement['qty'])):
-         for vehicle in vehicles["Fire Engine"]: 
-          if(vehicle in label['vehicle_type']):
-           checkid = label['id'].split("_")[3]
-           checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')    
-           for check in checkbox:
-            if(check['value']==checkid):
-             check.check()
-             despatched.append(missionId)
-      browser.find_by_id('mission_alarm_btn').click()
-
-    for miss in despatched:
+       if requirement == "Fire engines":
+         print(counter)
+         input('ok A')
+         for vehicle in vehicles["Fire Engine"]:
+           print(vehicle)
+           print(counter)
+           input('ok B')
+           if(vehicle in label['vehicle_type']):
+             print(label['vehicle_type'])
+             print(counter)
+             input('ok C')
+             checkid = label['id'].split("_")[3]
+             checkbox=browser.find_by_css('input[class="vehicle_checkbox"]')    
+             for check in checkbox:
+               if(check['value']==checkid):
+                 check.check()
+                 #despatched.append(missionId)
+   #browser.find_by_id('mission_alarm_btn').click()
+   browser.find_by_id('mission_alarm_btn').click()
+   for miss in despatched:
      if(miss==missionId):
        print("Already despatched this mission.. Skipping it")
-    browser.find_by_name('commit').click()
+       browser.find_by_name('commit').click()
  
    
   # except: 
